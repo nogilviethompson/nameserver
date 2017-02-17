@@ -1,3 +1,4 @@
+/*YanqiXu added this comment.*/
 /***************************************************************************
 * nameservercpp  -  Program to serve of last name statistics
  *
