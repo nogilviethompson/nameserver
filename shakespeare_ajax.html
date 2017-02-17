@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>Software Development Project 2 - Shakespeare Lookup from Web Page</title>
+<META AUTHOR="Jim Skon">
+</head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <!-- $Id: name_stats_ajax.html,v 1.6 skon Exp $ -->
+<link rel="stylesheet" type="text/css" href="shakespeare_ajax.css">
+  <title>GNU cgicc Name Data Form</title>
+</head>
+
+<script type = "text/javascript">
+var XMLHttp;
+if(navigator.appName == "Microsoft Internet Explorer") {
+    XMLHttp = new ActiveXObject("Microsoft.XMLHTTP");
+} else {
+    XMLHttp = new XMLHttpRequest();
+}
+// return the value of the radio button that is checked
+// return an empty string if none are checked, or
+// there are no radio buttons
+function getCheckedValue(radioObj) {
+  if(!radioObj)
+     return "";
+  var radioLength = radioObj.length;
+  if(radioLength == undefined)
+     if(radioObj.checked)
+        return radioObj.value;
+     else
+        return "";
+  for(var i = 0; i < radioLength; i++) {
+     if(radioObj[i].checked) {
+        return radioObj[i].value;
+     }
+   }
+    return "";
+}
+function getresponse () {
+
+     var ts = getCheckedValue(document.radioResultsSelect.type_select);
+
+     var name = document.getElementById('name').value;		     
+     if (name.length < 1) return;
+
+    XMLHttp.open("GET", "/cgi-bin/ogilviethompsonh_Shakefetchajax.cgi?"
+						 + "&type_select=" + ts
+						 + "&name=" + name
+						 ,true);
+    XMLHttp.onreadystatechange=function() {
+    document.getElementById('response_area').innerHTML = XMLHttp.responseText;
+
+    }
+	XMLHttp.send(null);
+}
+
+</script>
+
+<body>
+<h1>Project 2 - Shakespeare Lookup from Web Page</h1>
+<p>This program allows for the user to search the Collected Works of Shakespeare for a word, and it will display every line that contains that word</p>
+<p>The user is also allowed to choose between searching for specific words or for word stems, which will show all lines containing groups of words (e.g. group, groups, grouped, etc.)</p>
+
+
+<p>
+Select which type of search you would like to perform:
+<form name="radioResultsSelect">
+<table>`
+<tr>
+<td align=right valign=top><input name="type_select" type="radio" value="Specific" checked id=specific></td>
+<td align=left valign=top>Specific Words</td></input>
+
+<td align=right valign=top><input name="type_select" type="radio" value="Stemmed"  id=stemmed></td>
+<td align=left valign=top>Word Stems</td></input>
+
+</tr>
+</table>
+
+<hr>
+Word to look up matching lines for: 
+<input name="name" type="text" id=name maxlength=30></td>
+
+<p>
+<input type="button" onclick="javascript: getresponse ()" name="submit" value="Submit" />
+</p>
+
+
+<div id = "response_area">
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
